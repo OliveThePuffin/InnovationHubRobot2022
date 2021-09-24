@@ -1,0 +1,25 @@
+App starts fullscreen
+
+Ready/start button
+	when pressed:
+
+"WELCOME TO THE INNOVATION DESIGN HUB!"
+"I will be your tour guide {this morning, this afternoon, this evening, tonight}"
+	and some other messages/blurbs, safety - emergency stop
+
+stackswitcher for different settings:
+	Language
+	Rooms
+	Start
+
+After tour has started:
+	Display room being toured
+	Button interface
+		Pause/Resume tour
+		Cancel tour
+		Skip room
+
+When tour has finished:
+	Offer to start another tour (if battery is above threshold)
+	otherwise go back to its post (charge/wait for others to tour)
+

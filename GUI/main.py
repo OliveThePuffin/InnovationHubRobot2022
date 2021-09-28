@@ -104,7 +104,7 @@ def main():
     # play a welcome video and select room
     intro = TourGuideUI()
     intro.intro()
-    #Gtk.main()
+    Gtk.main()
 
 if __name__ == "__main__":
     main()

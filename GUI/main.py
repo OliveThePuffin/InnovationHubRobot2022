@@ -2,6 +2,7 @@
 import mpv
 import locale
 import time
+import threading
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
@@ -42,6 +43,8 @@ class TourGuideUI(Gtk.Window):
 
     def intro(self):
 
+        video = Gtk.Frame()
+        self.add(video)
         button_width = 1000
         button_height = 700
 
@@ -57,7 +60,10 @@ class TourGuideUI(Gtk.Window):
         button5.set_size_request(button_width, button_height)
         button6 = Gtk.Button(label="Room 6")
         button6.set_size_request(button_width, button_height)
-
+        quit_button = Gtk.Button(label="Quit")
+        quit_button.set_size_request(button_width/1.5, button_height)
+        quit_button.connect("clicked", Gtk.main_quit)
+ 
         grid = Gtk.Grid();
         grid.set_border_width(30)
         grid.add(button1);
@@ -66,19 +72,21 @@ class TourGuideUI(Gtk.Window):
         grid.attach_next_to(button4, button2, Gtk.PositionType.BOTTOM, 2, 1);
         grid.attach(button5, 1, 2, 1, 1);
         grid.attach_next_to(button6, button5, Gtk.PositionType.RIGHT, 1, 1);
-        self.add(grid)
-
-        quit_button = Gtk.Button(label="Quit")
-        quit_button.set_size_request(600, 600)
-        quit_button.connect("clicked", Gtk.main_quit)
         grid.attach(quit_button, 3, 2, 1, 1)
+        video.add(grid)
 
-        video = Gtk.Frame()
-        grid.attach(video, 3, 1, 1, 1)
         self.show_all()
         self.mpv = mpv.MPV(wid=str(video.get_property("window").get_xid()))
-        self.mpv.play("intro.mkv")
-        self.mpv.terminate()
+        self.mpv.play("intro-short.mkv")
+
+        t1 = threading.Thread(target=self.wait_video)
+        t1.start()
+
+    def wait_video(self):
+        self.mpv.wait_for_playback()
+        self.mpv.quit()
+        #self.show_all()
+        #self.mpv.terminate()
 
     def quit(self):
         Gtk.main_quit()
@@ -93,15 +101,9 @@ def main():
     ready_wait.ready_wait()
     Gtk.main()
 
-    # play a welcome video
+    # play a welcome video and select room
     intro = TourGuideUI()
     intro.intro()
-    Gtk.main()
-
-    # room selection
-    #room_select = TourGuideUI()
-    #room_select.room_select()
-    #room_select.show_all()
     #Gtk.main()
 
 if __name__ == "__main__":

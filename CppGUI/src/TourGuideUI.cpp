@@ -32,7 +32,7 @@ void TourGuideUI::goto_next()
 	std::string current_widget = m_stack.get_visible_child_name();
 
 	if (current_widget == "Ready")
-		m_stack.set_visible_child("Intro");	
+		m_stack.set_visible_child("Intro");
 	else if (current_widget == "Intro")
 		this->close();
 	else

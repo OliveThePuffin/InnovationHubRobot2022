@@ -1,20 +1,40 @@
 #include "TourGuideUI.h"
-#include <iostream>
-using namespace std;
 
-HelloWorld::HelloWorld() : m_button("Hello World")
+TourGuideUI::TourGuideUI() //: m_button("Hello World")
 {
-	set_border_width(30);
-	m_button.signal_clicked().connect(sigc::mem_fun(*this, &HelloWorld::on_button_clicked));
-	add(m_button);
-	m_button.show();
+	//Set up Window
+	this->add(m_stack);
+	this->set_border_width(10);
+	this->fullscreen();
+
+	//Set up the Stack
+	m_stack.add(ready_button, "Ready");
+	m_stack.add(intro_frame, "Intro");
+
+	//Set up Ready Screen
+	ready_button.add(ready_gif);
+	ready_button.signal_clicked().
+		connect(sigc::mem_fun(*this, &TourGuideUI::goto_next));
+	ready_gif.set(Gdk::PixbufAnimation::create_from_file(ready_file));
+
+	//Set up intro video
+
+	//show window
+	this->show_all();
 }
 
-HelloWorld::~HelloWorld()
+TourGuideUI::~TourGuideUI()
 {
 }
 
-void HelloWorld::on_button_clicked()
+void TourGuideUI::goto_next()
 {
-	cout << "Hello World" << endl;
+	std::string current_widget = m_stack.get_visible_child_name();
+
+	if (current_widget == "Ready")
+		m_stack.set_visible_child("Intro");	
+	else if (current_widget == "Intro")
+		this->close();
+	else
+		this->close();
 }

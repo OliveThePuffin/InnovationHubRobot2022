@@ -1,5 +1,5 @@
 bin/TGUI: src/main.cpp include/TourGuideUI.h \
- /usr/include/gtkmm-3.0/gtkmm/button.h \
+ /usr/include/gtkmm-3.0/gtkmm/window.h \
  /usr/include/glibmm-2.4/glibmm/ustring.h \
  /usr/lib/glibmm-2.4/include/glibmmconfig.h \
  /usr/include/glibmm-2.4/glibmm/unicode.h /usr/include/glib-2.0/glib.h \
@@ -100,13 +100,6 @@ bin/TGUI: src/main.cpp include/TourGuideUI.h \
  /usr/include/sigc++-2.0/sigc++/adaptors/exception_catch.h \
  /usr/include/sigc++-2.0/sigc++/adaptors/track_obj.h \
  /usr/include/sigc++-2.0/sigc++/functors/functors.h \
- /usr/include/gtkmm-3.0/gtkmm/bin.h \
- /usr/include/gtkmm-3.0/gtkmm/container.h \
- /usr/include/gtkmm-3.0/gtkmm/widget.h \
- /usr/lib/gtkmm-3.0/include/gtkmmconfig.h \
- /usr/lib/gdkmm-3.0/include/gdkmmconfig.h \
- /usr/lib/pangomm-1.4/include/pangommconfig.h \
- /usr/include/pangomm-1.4/pangomm/context.h \
  /usr/include/glibmm-2.4/glibmm/object.h \
  /usr/include/glibmm-2.4/glibmm/objectbase.h \
  /usr/include/glibmm-2.4/glibmm/class.h \
@@ -151,6 +144,13 @@ bin/TGUI: src/main.cpp include/TourGuideUI.h \
  /usr/include/glibmm-2.4/glibmm/error.h \
  /usr/include/glibmm-2.4/glibmm/exception.h \
  /usr/include/glibmm-2.4/glibmm/variant_basictypes.h \
+ /usr/include/gtkmm-3.0/gtkmm/bin.h \
+ /usr/include/gtkmm-3.0/gtkmm/container.h \
+ /usr/include/gtkmm-3.0/gtkmm/widget.h \
+ /usr/lib/gtkmm-3.0/include/gtkmmconfig.h \
+ /usr/lib/gdkmm-3.0/include/gdkmmconfig.h \
+ /usr/lib/pangomm-1.4/include/pangommconfig.h \
+ /usr/include/pangomm-1.4/pangomm/context.h \
  /usr/include/glibmm-2.4/glibmm/arrayhandle.h \
  /usr/include/glibmm-2.4/glibmm/listhandle.h \
  /usr/include/pangomm-1.4/pangomm/fontdescription.h \
@@ -771,12 +771,10 @@ bin/TGUI: src/main.cpp include/TourGuideUI.h \
  /usr/include/giomm-2.4/giomm/actiongroup.h \
  /usr/include/gtkmm-3.0/gtkmm/childpropertyproxy.h \
  /usr/include/gtkmm-3.0/gtkmm/childpropertyproxy_base.h \
- /usr/include/gtkmm-3.0/gtkmm/activatable.h \
- /usr/include/gtkmm-3.0/gtkmm/action.h \
- /usr/include/gtkmm-3.0/gtkmm/accelgroup.h \
- /usr/include/gtkmm-3.0/gtkmm/window.h \
  /usr/include/gtkmm-3.0/gtkmm/application.h \
  /usr/include/gtkmm-3.0/gtkmm/actiongroup.h \
+ /usr/include/gtkmm-3.0/gtkmm/action.h \
+ /usr/include/gtkmm-3.0/gtkmm/accelgroup.h \
  /usr/include/gtkmm-3.0/gtkmm/accelkey.h \
  /usr/include/giomm-2.4/giomm/application.h \
  /usr/include/giomm-2.4/giomm/actionmap.h \
@@ -821,9 +819,16 @@ bin/TGUI: src/main.cpp include/TourGuideUI.h \
  /usr/include/giomm-2.4/giomm/menumodel.h \
  /usr/include/giomm-2.4/giomm/menu.h \
  /usr/include/giomm-2.4/giomm/menuitem.h \
- /usr/include/gtkmm-3.0/gtkmm/windowgroup.h
+ /usr/include/gtkmm-3.0/gtkmm/windowgroup.h \
+ /usr/include/gtkmm-3.0/gtkmm/stack.h \
+ /usr/include/gtkmm-3.0/gtkmm/button.h \
+ /usr/include/gtkmm-3.0/gtkmm/activatable.h \
+ /usr/include/gtkmm-3.0/gtkmm/image.h /usr/include/gtkmm-3.0/gtkmm/misc.h \
+ /usr/include/gdkmm-3.0/gdkmm/pixbufanimation.h \
+ /usr/include/gdkmm-3.0/gdkmm/pixbufanimationiter.h \
+ /usr/include/gtkmm-3.0/gtkmm/frame.h
 include/TourGuideUI.h:
-/usr/include/gtkmm-3.0/gtkmm/button.h:
+/usr/include/gtkmm-3.0/gtkmm/window.h:
 /usr/include/glibmm-2.4/glibmm/ustring.h:
 /usr/lib/glibmm-2.4/include/glibmmconfig.h:
 /usr/include/glibmm-2.4/glibmm/unicode.h:
@@ -940,13 +945,6 @@ include/TourGuideUI.h:
 /usr/include/sigc++-2.0/sigc++/adaptors/exception_catch.h:
 /usr/include/sigc++-2.0/sigc++/adaptors/track_obj.h:
 /usr/include/sigc++-2.0/sigc++/functors/functors.h:
-/usr/include/gtkmm-3.0/gtkmm/bin.h:
-/usr/include/gtkmm-3.0/gtkmm/container.h:
-/usr/include/gtkmm-3.0/gtkmm/widget.h:
-/usr/lib/gtkmm-3.0/include/gtkmmconfig.h:
-/usr/lib/gdkmm-3.0/include/gdkmmconfig.h:
-/usr/lib/pangomm-1.4/include/pangommconfig.h:
-/usr/include/pangomm-1.4/pangomm/context.h:
 /usr/include/glibmm-2.4/glibmm/object.h:
 /usr/include/glibmm-2.4/glibmm/objectbase.h:
 /usr/include/glibmm-2.4/glibmm/class.h:
@@ -991,6 +989,13 @@ include/TourGuideUI.h:
 /usr/include/glibmm-2.4/glibmm/error.h:
 /usr/include/glibmm-2.4/glibmm/exception.h:
 /usr/include/glibmm-2.4/glibmm/variant_basictypes.h:
+/usr/include/gtkmm-3.0/gtkmm/bin.h:
+/usr/include/gtkmm-3.0/gtkmm/container.h:
+/usr/include/gtkmm-3.0/gtkmm/widget.h:
+/usr/lib/gtkmm-3.0/include/gtkmmconfig.h:
+/usr/lib/gdkmm-3.0/include/gdkmmconfig.h:
+/usr/lib/pangomm-1.4/include/pangommconfig.h:
+/usr/include/pangomm-1.4/pangomm/context.h:
 /usr/include/glibmm-2.4/glibmm/arrayhandle.h:
 /usr/include/glibmm-2.4/glibmm/listhandle.h:
 /usr/include/pangomm-1.4/pangomm/fontdescription.h:
@@ -1647,12 +1652,10 @@ include/TourGuideUI.h:
 /usr/include/giomm-2.4/giomm/actiongroup.h:
 /usr/include/gtkmm-3.0/gtkmm/childpropertyproxy.h:
 /usr/include/gtkmm-3.0/gtkmm/childpropertyproxy_base.h:
-/usr/include/gtkmm-3.0/gtkmm/activatable.h:
-/usr/include/gtkmm-3.0/gtkmm/action.h:
-/usr/include/gtkmm-3.0/gtkmm/accelgroup.h:
-/usr/include/gtkmm-3.0/gtkmm/window.h:
 /usr/include/gtkmm-3.0/gtkmm/application.h:
 /usr/include/gtkmm-3.0/gtkmm/actiongroup.h:
+/usr/include/gtkmm-3.0/gtkmm/action.h:
+/usr/include/gtkmm-3.0/gtkmm/accelgroup.h:
 /usr/include/gtkmm-3.0/gtkmm/accelkey.h:
 /usr/include/giomm-2.4/giomm/application.h:
 /usr/include/giomm-2.4/giomm/actionmap.h:
@@ -1698,3 +1701,11 @@ include/TourGuideUI.h:
 /usr/include/giomm-2.4/giomm/menu.h:
 /usr/include/giomm-2.4/giomm/menuitem.h:
 /usr/include/gtkmm-3.0/gtkmm/windowgroup.h:
+/usr/include/gtkmm-3.0/gtkmm/stack.h:
+/usr/include/gtkmm-3.0/gtkmm/button.h:
+/usr/include/gtkmm-3.0/gtkmm/activatable.h:
+/usr/include/gtkmm-3.0/gtkmm/image.h:
+/usr/include/gtkmm-3.0/gtkmm/misc.h:
+/usr/include/gdkmm-3.0/gdkmm/pixbufanimation.h:
+/usr/include/gdkmm-3.0/gdkmm/pixbufanimationiter.h:
+/usr/include/gtkmm-3.0/gtkmm/frame.h:

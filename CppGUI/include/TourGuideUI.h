@@ -25,12 +25,12 @@ class TourGuideUI : public Gtk::Window
 		int s_width  =	1920;
 		int s_height =	1080;
 
-	private:		
+	private:
 		//Member widgets:
 		Gtk::Stack	m_stack;
 		Gtk::Button	ready_button;
 		Gtk::Image	ready_gif;
-		Gtk::Frame	intro_frame;	
+		Gtk::Frame	intro_frame;
 
 		//misc variables
 		//FILES NEED TO BE SET FROM PWD

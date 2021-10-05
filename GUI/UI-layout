@@ -27,7 +27,7 @@ When tour has finished:
 
 
 
-CODE
+Implementation
 	Stack
 		Ready-wait
 			Button
@@ -56,3 +56,29 @@ CODE
 					goto Room-selection
 				Replay button
 					goto same room
+
+
+
+Classes:
+	TourGuideUI
+		window
+		stack
+	ready
+		Button
+		Gif
+	intro
+		Video
+	room_select
+		Grid
+		Buttons
+	room_stack
+		Stack
+		Room1
+		Room2
+		Room3
+		Room4
+		etc
+	rooms
+		Grid
+		Video
+		skip Button

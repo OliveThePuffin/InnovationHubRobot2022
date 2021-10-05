@@ -1,6 +1,6 @@
 # Tour Guide GUI
 
-This project requires the gtkmm3, gstreamermm, and gst-plugins-good packages to be installed.
+This project requires the `gtkmm3` and `mpv` packages to be installed.
 
 Because this GUI uses the GTK API, it can be customized with different GTK themes
 

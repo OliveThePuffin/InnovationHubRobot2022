@@ -8,7 +8,7 @@ EXE := $(BIN_DIR)/TGUI
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-CPPFLAGS := -Iinclude `pkg-config --cflags --libs gtkmm-3.0` `pkg-config --cflags --libs gstreamermm-1.0` -MMD -MP
+CPPFLAGS := -Iinclude `pkg-config --cflags --libs gtkmm-3.0` -MMD -MP
 CFLAGS   := -Wall
 LDFLAGS  := -Llib
 LDLIBS   := -lm 

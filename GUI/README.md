@@ -9,6 +9,9 @@ https://www.gnome-look.org/browse?cat=135
 
 Currently the binary must be run in this dir as `bin/TGUI` or the media files won't load
 
-TODO: fix this
+TODO:
+	Make binary runable with media files anywhere
+	fix pixel formatting on ready.gif
+	fix alignment of GUI on tablet
 
 Feedback: Make room selection layout show current location

@@ -24,8 +24,8 @@ TourGuideUI::~TourGuideUI()
 
 void TourGuideUI::setup_stack()
 {
-	m_stack.set_transition_type(Gtk::STACK_TRANSITION_TYPE_UNDER_DOWN);
-	m_stack.set_transition_duration(1000);
+	m_stack.set_transition_type(Gtk::STACK_TRANSITION_TYPE_CROSSFADE);
+	m_stack.set_transition_duration(250);
 	m_stack.add(ready_button, "Ready");
 	m_stack.add(main_menu, "Main Menu");
 	m_stack.add(room_grid, "Room Select");

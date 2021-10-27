@@ -10,3 +10,5 @@ https://www.gnome-look.org/browse?cat=135
 Currently the binary must be run in this dir as `bin/TGUI` or the media files won't load
 
 TODO: fix this
+
+Feedback: Make room selection layout show current location

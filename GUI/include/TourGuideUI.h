@@ -27,8 +27,8 @@ class TourGuideUI : public Gtk::Window
 		virtual ~TourGuideUI();
 
 		//Hard coded screen resolution
-		const int s_width  =	3840;
-		const int s_height =	2160;
+		const int s_width  =	800;
+		const int s_height =	480;
 
 	private:
 		//Helper functions
@@ -68,7 +68,7 @@ class TourGuideUI : public Gtk::Window
 
 		//Media files
 		std::string video_player = "mpv --fs ";
-		std::string ready_file = "media/ready_4k.gif";
+		std::string ready_file = "media/ready.gif";
 		std::string intro_file = "media/intro-short.mkv";
 
 		//Signal Handlers:

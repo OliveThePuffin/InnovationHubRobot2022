@@ -3,7 +3,7 @@
 #ifndef GTKMM_TOUR_GUIDE_UI_H
 #define GTKMM_TOUR_GUIDE_UI_H
 
-#define GENERAL_BORDER_WIDTH	s_height/40
+#define GENERAL_BORDER_WIDTH	s_height/48
 #define MENU_BORDER_WIDTH	s_height/32
 
 #define ROOM_BUTTON_WIDTH	(s_width - (2*GENERAL_BORDER_WIDTH)) / 4

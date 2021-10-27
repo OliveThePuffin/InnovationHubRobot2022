@@ -4,7 +4,6 @@ TourGuideUI::TourGuideUI() //: m_button("Hello World")
 {
 	//Set up Window
 	this->add(m_stack);
-	this->set_border_width(10);
 	this->fullscreen();
 
 	//Set up elements
@@ -105,6 +104,7 @@ void TourGuideUI::setup_options()
 	options_back_button.set_label("Back");
 	options_back_button.set_size_request
 		(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
+	options_grid.set_border_width(GENERAL_BORDER_WIDTH);
 	options_grid.add(options_back_button);
 	options_back_button.signal_clicked().connect(sigc::bind(sigc::mem_fun
 				(*this,	&TourGuideUI::goto_menu), false));

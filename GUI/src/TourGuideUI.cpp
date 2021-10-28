@@ -35,6 +35,7 @@ void TourGuideUI::setup_ready()
 {
 	//Set up Ready Screen
 	ready_button.add(ready_gif);
+	//ready_button.set_border_width(GENERAL_BORDER_WIDTH);
 	ready_button.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this,
 				&TourGuideUI::goto_menu), true));
 	ready_gif.set(Gdk::PixbufAnimation::create_from_file(ready_file));
@@ -112,8 +113,8 @@ void TourGuideUI::setup_options()
 
 void TourGuideUI::goto_menu(bool intro)
 {
-	if (intro)
-		system(video_player.append(intro_file).c_str());
+	//if (intro)
+	//	system(video_player.append(intro_file).c_str());
 	m_stack.set_visible_child("Main Menu");
 }
 

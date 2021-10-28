@@ -69,7 +69,7 @@ class TourGuideUI : public Gtk::Window
 		//Media files
 		std::string video_player = "mpv --fs ";
 		std::string ready_file = "media/ready.gif";
-		std::string intro_file = "media/intro-short.mkv";
+		std::string intro_file = "media/intro.mkv";
 
 		//Signal Handlers:
 		void goto_menu(bool intro);

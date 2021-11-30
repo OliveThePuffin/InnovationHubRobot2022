@@ -6,8 +6,8 @@
 #define GENERAL_BORDER_WIDTH	s_height/48
 #define MENU_BORDER_WIDTH	s_height/32
 
-#define ROOM_BUTTON_WIDTH	(s_width - (2*GENERAL_BORDER_WIDTH)) / 4
-#define ROOM_BUTTON_HEIGHT	(s_height - (2*GENERAL_BORDER_WIDTH)) / 3
+#define ROOM_BUTTON_WIDTH	(s_width - (2*GENERAL_BORDER_WIDTH)) / 9
+#define ROOM_BUTTON_HEIGHT	(s_height - (2*GENERAL_BORDER_WIDTH)) / 2
 
 //execute system shell commands
 //string support
@@ -54,12 +54,13 @@ class TourGuideUI : public Gtk::Window
 
 		//Room Select
 		Gtk::Grid	room_grid;
-		Gtk::Button	room1_button;
-		Gtk::Button	room2_button;
-		Gtk::Button	room3_button;
-		Gtk::Button	room4_button;
-		Gtk::Button	room5_button;
-		Gtk::Button	room6_button;
+		Gtk::Button	room_capstone;
+		Gtk::Button	room_composites;
+		Gtk::Button	room_electronics;
+		Gtk::Button	room_cornerstone;
+		Gtk::Button	room_cafe;
+		Gtk::Button	room_metals;
+		Gtk::Button	room_wood;
 		Gtk::Button	room_back_button;
 
 		//Options

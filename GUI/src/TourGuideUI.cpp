@@ -72,30 +72,29 @@ void TourGuideUI::setup_main_menu()
 
 void TourGuideUI::setup_room_select()
 {
-	room1_button.set_label("Room 1");
-	room2_button.set_label("Room 2");
-	room3_button.set_label("Room 3");
-	room4_button.set_label("Room 4");
-	room5_button.set_label("Room 5");
-	room6_button.set_label("Room 6");
+	room_capstone.set_label("Capstone");
+	room_composites.set_label("Composites");
+	room_electronics.set_label("Electronics");
+	room_cornerstone.set_label("Cornerstone");
+	room_cafe.set_label("Cafe");
+	room_metals.set_label("Metals");
+	room_wood.set_label("Wood");
 	room_back_button.set_label("Back");
 
 	room_grid.set_border_width(GENERAL_BORDER_WIDTH);
-	room1_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room2_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room3_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room4_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room5_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room6_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
-	room_back_button.set_size_request(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
+	room_grid.set_row_homogeneous(true);
+	room_grid.set_row_spacing(ROOM_BUTTON_HEIGHT/4);
+	room_grid.set_column_homogeneous(true);
+	//room_grid.set_column_spacing(ROOM_BUTTON_WIDTH);
 
-	room_grid.add(room1_button);
-	room_grid.attach(room2_button, 1, 0, 2, 1);
-	room_grid.attach_next_to(room3_button, room1_button, Gtk::POS_BOTTOM, 1, 2);
-	room_grid.attach_next_to(room4_button, room2_button, Gtk::POS_BOTTOM, 2, 1);
-	room_grid.attach(room5_button, 1, 2, 1, 1);
-	room_grid.attach_next_to(room6_button, room5_button, Gtk::POS_RIGHT, 1, 1);
-	room_grid.attach(room_back_button, 3, 2, 1, 1);
+	room_grid.attach(room_capstone, 0, 0, 4, 1);
+	room_grid.attach_next_to(room_composites, room_capstone, Gtk::POS_RIGHT, 2, 1);
+	room_grid.attach_next_to(room_electronics, room_composites, Gtk::POS_RIGHT, 1, 1);
+	room_grid.attach_next_to(room_cornerstone, room_electronics, Gtk::POS_RIGHT, 2, 1);
+	room_grid.attach(room_cafe, 0, 1, 2, 1);
+	room_grid.attach_next_to(room_metals, room_cafe, Gtk::POS_RIGHT, 3, 1);
+	room_grid.attach_next_to(room_wood, room_metals, Gtk::POS_RIGHT, 3, 1);
+	room_grid.attach_next_to(room_back_button, room_wood, Gtk::POS_RIGHT, 1, 1);
 	room_back_button.signal_clicked().connect(sigc::bind(sigc::mem_fun
 				(*this, &TourGuideUI::goto_menu), false));
 }

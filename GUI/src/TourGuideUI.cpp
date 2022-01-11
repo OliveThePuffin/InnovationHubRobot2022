@@ -74,7 +74,7 @@ void TourGuideUI::setup_room_select()
 {
 	room_capstone.set_label("Capstone");
 	room_composites.set_label("Composites");
-	room_electronics.set_label("Electronics");
+	room_electronics.set_label("Electr\nonics");
 	room_cornerstone.set_label("Cornerstone");
 	room_cafe.set_label("Cafe");
 	room_metals.set_label("Metals");
@@ -83,7 +83,7 @@ void TourGuideUI::setup_room_select()
 
 	room_grid.set_border_width(GENERAL_BORDER_WIDTH);
 	room_grid.set_row_homogeneous(true);
-	room_grid.set_row_spacing(ROOM_BUTTON_HEIGHT/4);
+	room_grid.set_row_spacing(s_height/10);
 	room_grid.set_column_homogeneous(true);
 	//room_grid.set_column_spacing(ROOM_BUTTON_WIDTH);
 
@@ -102,8 +102,8 @@ void TourGuideUI::setup_room_select()
 void TourGuideUI::setup_options()
 {
 	options_back_button.set_label("Back");
-	options_back_button.set_size_request
-		(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
+	//options_back_button.set_size_request
+	//	(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
 	options_grid.set_border_width(GENERAL_BORDER_WIDTH);
 	options_grid.add(options_back_button);
 	options_back_button.signal_clicked().connect(sigc::bind(sigc::mem_fun

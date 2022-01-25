@@ -157,7 +157,7 @@ def main():
             # opening
             binary_img = cv2.morphologyEx(binary_img, cv2.MORPH_OPEN, kernel_open)
 
-            cv2.imshow("Binary Image", binary_img)
+            #cv2.imshow("Binary Image", binary_img)
 
             # get connected components
             nb_components, output, stats, centroids = cv2.connectedComponentsWithStats(binary_img, connectivity=8)
@@ -263,8 +263,8 @@ def main():
             else:
                 ser.write(b'Clear_path')
 
-            cv2.namedWindow('Align Example', cv2.WINDOW_AUTOSIZE)
-            cv2.imshow('Align Example', images)
+            #cv2.namedWindow('Align Example', cv2.WINDOW_AUTOSIZE)
+            #cv2.imshow('Align Example', images)
             key = cv2.waitKey(1)
             # Press esc or 'q' to close the image window
             if key & 0xFF == ord('q') or key == 27:

@@ -56,7 +56,9 @@ def check_for_obstruction(x, y, z):
 
 def main():
     PATH_OBSTRUCTED = False
-    PERSON_IN_PATH = Truea
+    PERSON_IN_PATH = True
+
+    ser = serial.Serial('/dev/ttyACM0')  # open serial port
 
     video_feed = cv2.VideoCapture(0)
     img_width = int(video_feed.get(3))
@@ -257,6 +259,9 @@ def main():
 
             if PATH_OBSTRUCTED:
                 print("Object in path")
+                ser.write(b'Object_obstructed')
+            else:
+                ser.write(b'Clear_path')
 
             cv2.namedWindow('Align Example', cv2.WINDOW_AUTOSIZE)
             cv2.imshow('Align Example', images)
@@ -267,6 +272,8 @@ def main():
                 break
     finally:
         pipeline.stop()
+
+    ser.close()
 
     # videoWriter.release()
 

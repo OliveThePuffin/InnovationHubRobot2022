@@ -110,10 +110,10 @@ void TourGuideUI::setup_options()
 				(*this,	&TourGuideUI::goto_menu), false));
 }
 
-void TourGuideUI::goto_menu(bool intro)
+void TourGuideUI::goto_menu(bool play_intro)
 {
-	//if (intro)
-	//	system(video_player.append(intro_file).c_str());
+	if (play_intro)
+		system(video_player.append(intro_file).c_str());
 	m_stack.set_visible_child("Main Menu");
 }
 

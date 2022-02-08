@@ -11,10 +11,13 @@ OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CPPFLAGS := -Iinclude `pkg-config --cflags --libs gtkmm-3.0` -MMD -MP
 CFLAGS   := -Wall
 LDFLAGS  := -Llib
-LDLIBS   := -lm 
+LDLIBS   := -lm
 .PHONY: all clean
 
 all: $(EXE)
+
+exec: all
+	bin/TGUI
 
 $(EXE): $(OBJ) | $(BIN_DIR)
 	$(CC) $(CPPFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@

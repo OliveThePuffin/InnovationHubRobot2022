@@ -54,6 +54,7 @@ class TourGuideUI : public Gtk::Window
 
 		//Room Select
 		Gtk::Grid	room_grid;
+		Gtk::Image	room_layout;
 		Gtk::Button	room_capstone;
 		Gtk::Button	room_composites;
 		Gtk::Button	room_electronics;
@@ -70,6 +71,7 @@ class TourGuideUI : public Gtk::Window
 		//Media files
 		std::string video_player = "mpv --fs ";
 		std::string ready_file = "media/ready.gif";
+		std::string floor1_layout = "media/floor1-resized.png";
 		std::string intro_file = "media/intro.mkv";
 
 		//Signal Handlers:

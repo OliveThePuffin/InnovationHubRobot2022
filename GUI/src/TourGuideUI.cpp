@@ -72,6 +72,9 @@ void TourGuideUI::setup_main_menu()
 
 void TourGuideUI::setup_room_select()
 {
+
+	room_layout.set(floor1_layout);
+
 	room_capstone.set_label("Capstone");
 	room_composites.set_label("Composites");
 	room_electronics.set_label("Electr\nonics");
@@ -87,11 +90,12 @@ void TourGuideUI::setup_room_select()
 	room_grid.set_column_homogeneous(true);
 	//room_grid.set_column_spacing(ROOM_BUTTON_WIDTH);
 
-	room_grid.attach(room_capstone, 0, 0, 4, 1);
+	room_grid.attach(room_layout, 0, 0, 9, 2);
+	room_grid.attach(room_capstone, 0, 2, 4, 1);
 	room_grid.attach_next_to(room_composites, room_capstone, Gtk::POS_RIGHT, 2, 1);
 	room_grid.attach_next_to(room_electronics, room_composites, Gtk::POS_RIGHT, 1, 1);
 	room_grid.attach_next_to(room_cornerstone, room_electronics, Gtk::POS_RIGHT, 2, 1);
-	room_grid.attach(room_cafe, 0, 1, 2, 1);
+	room_grid.attach(room_cafe, 0, 3, 2, 1);
 	room_grid.attach_next_to(room_metals, room_cafe, Gtk::POS_RIGHT, 3, 1);
 	room_grid.attach_next_to(room_wood, room_metals, Gtk::POS_RIGHT, 3, 1);
 	room_grid.attach_next_to(room_back_button, room_wood, Gtk::POS_RIGHT, 1, 1);

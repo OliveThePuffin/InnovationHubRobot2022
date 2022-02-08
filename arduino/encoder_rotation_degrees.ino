@@ -1,8 +1,8 @@
 /*
-   The purpose of this code is to count the ouput pulses or
-   the encoder outputs as you rotate the Motor shaft. You can run the
-   same code on the Arduino Uno, Arduino Nano, Arduino Mega, etc.
+    Based on code from https://www.electroniclinic.com/arduino-dc-motor-speed-control-with-encoder-arduino-dc-motor-encoder/
+
 */
+
 #define Encoder_output_A 2 // pin2 of the Arduino
 #define Encoder_output_B 6 // pin 3 of the Arduino
 #include "DualMC33926MotorShield.h"

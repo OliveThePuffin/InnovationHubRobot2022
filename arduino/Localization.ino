@@ -1,9 +1,18 @@
 #include "DualMC33926MotorShield.h"
 #include <math.h>
-#define TICKS_PER_ROTATION  800  //50*64
+
+//define parameters
+#define TICKS_PER_ROTATION  800
 #define DUTY_CYCLE          127
 #define WHEEL_RADIUS        0.184
 #define ROBOT_WIDTH         0.027
+
+#define MINPWM		    0x20
+#define MAXPWM		    0xFF
+
+//Define functions
+//#define min(a,b) ((a)<(b)?(a):(b))
+
 DualMC33926MotorShield md;
 
 //Pin assignments
@@ -19,7 +28,6 @@ int rotation1 = 0;
 int rotation2 = 0;
 
 int pwm = 0;
-int minpwm = 65;
 
 byte receiveData;
 byte sendData;
@@ -35,10 +43,10 @@ int encoder1current = 0;
 int encoder2last = 0;
 int encoder2current = 0;
 
-int lastTime1 = 0;
-int currentTime1 = 0;
-int lastTime2 = 0;
-int currentTime2 = 0;
+unsigned int lastTime1 = 0;
+unsigned int currentTime1 = 0;
+unsigned int lastTime2 = 0;
+unsigned int currentTime2 = 0;
 
 float deltaT1 = 0;
 float deltaT2 = 0;
@@ -207,11 +215,18 @@ void movebot(float distance) {
         traveled = sqrt(pow((startX - x), 2) + pow((startY - y), 2));
         serialEvent();
         if (!moveCommand) break;
-        pwm = int((
-            pow(tanh(distance), 1) *
-            (255 - minpwm) *
-            exp(-pow(distance/2 - traveled,2) / (pow(distance/2, 2)*2/3))) +
-            minpwm);
+
+	//Update PWM
+	int multiplier = 50;
+	if (traveled <= distance/2) {
+		pwm = min( multiplier * traveled + MINPWM, MAXPWM );
+		}
+	else if (traveled > distance/2 && traveled < distance) {
+		pwm = min( multiplier * (distance - traveled) + MINPWM, MAXPWM );
+		}
+	else{
+		pwm = 0;
+	}
 
         analogWrite(MOTORPWM[0], pwm);
         analogWrite(MOTORPWM[1], pwm);
@@ -225,13 +240,11 @@ void movebot(float distance) {
 }
 
 void rotatebot(float degrees) {
-    int maxpwm = 175;
     float rads = degrees * 2*PI/360;
 
-    if (degrees == 360) {
-        maxpwm = 90;
-        rads = 3*2*PI*1.05;
-    }
+    //if (degrees == 360) {
+    //    rads = 3*2*PI*1.05;
+    //}
     //Serial.println("destination:");
     //Serial.println(rads);
     double startPhi = phi;
@@ -240,7 +253,7 @@ void rotatebot(float degrees) {
     if (rads < 0) {
         digitalWrite(MOTORDIR[0], false);
         digitalWrite(MOTORDIR[1], false);
-        rads = -rads - 0.05;
+        rads = -rads;
     }
     //rotate left
     else {
@@ -250,11 +263,19 @@ void rotatebot(float degrees) {
     while(abs(phi - startPhi) < rads) {
         serialEvent();
         if (!rotateCommand) break;
-            pwm = int((
-                pow(tanh(rads), 2) *
-                (maxpwm - minpwm) *
-                exp(-pow(rads/2 - abs(phi-startPhi),2) / (pow(rads/2, 2)*2/3))) +
-                minpwm);
+
+	//Update PWM
+	int multiplier = 50;
+	if (traveled <= rads/2) {
+		pwm = min( multiplier * abs(phi-startPhi) + MINPWM, MAXPWM );
+		}
+	else if (traveled > rads/2 && traveled < rads) {
+		pwm = min( multiplier * (rads - abs(phi-startPhi)) + MINPWM, MAXPWM );
+		}
+	else{
+		pwm = 0;
+	}
+
             analogWrite(MOTORPWM[0], pwm);
             analogWrite(MOTORPWM[1], pwm);
             Serial.print("");
@@ -288,10 +309,10 @@ void circlebot(float radius) {
     analogWrite(MOTORPWM[0], abs(leftpwm));
     analogWrite(MOTORPWM[1], abs(rightpwm));
 
-    while(abs(phi-startPhi) < 2*PI*1.025) {
+    while(abs(phi-startPhi) < 2*PI) {
         serialEvent();
         if (!circleCommand) break;
-        if(phi-startPhi < (2*PI*1.025)/24) {
+        if(phi-startPhi < (2*PI)/24) {
             analogWrite(MOTORPWM[0], 0);
             analogWrite(MOTORPWM[1], abs(rightpwm));
         }

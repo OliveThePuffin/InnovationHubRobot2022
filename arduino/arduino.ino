@@ -1,7 +1,7 @@
 #include "DualMC33926MotorShield.h"
 #include <math.h>
 
-//define parameters
+//Define parameters
 #define TICKS_PER_ROTATION  800
 #define DUTY_CYCLE          127
 #define WHEEL_RADIUS        0.184
@@ -9,9 +9,6 @@
 
 #define MINPWM		    0x20
 #define MAXPWM		    0xFF
-
-//Define functions
-//#define min(a,b) ((a)<(b)?(a):(b))
 
 DualMC33926MotorShield md;
 
@@ -35,6 +32,7 @@ char receiveStr[5] = {' ', ' ', ' ', ' ', '\0'};
 
 bool moveCommand = false;
 bool circleCommand = false;
+bool arcCommand = false;
 bool rotateCommand = false;
 int  arg;
 
@@ -93,7 +91,8 @@ void setup() {
 void loop() {
     if (moveCommand) movebot(arg);
     if (rotateCommand) rotatebot(arg);
-    if (circleCommand) circlebot(arg);
+    if (circleCommand) circlebot(arg, 360);
+    if (arcCommand) circlebot(arg, 90);
 
 }
 
@@ -185,6 +184,28 @@ void serialEvent() {
                 circleCommand = true;
                 arg = atof(receiveStr);
                 break;
+
+	    //ARC (Like CIRCLE, but only 90 degrees)
+	    case '.':
+	    	Serial.println("ARC");
+                receiveStr[0] = ' ';
+                receiveStr[1] = ' ';
+                receiveStr[2] = ' ';
+                receiveStr[3] = ' ';
+                while (receiveData != '!') {
+                    if (Serial.available() > 0) {
+                        receiveData = Serial.read();
+                        if (receiveData == '!') break;
+                        receiveStr[0] = receiveStr[1];
+                        receiveStr[1] = receiveStr[2];
+                        receiveStr[2] = receiveStr[3];
+                        receiveStr[3] = receiveData;
+                    }
+                }
+                arcCommand = true;
+                arg = atof(receiveStr);
+                break;
+
         }
     }
 }
@@ -266,10 +287,10 @@ void rotatebot(float degrees) {
 
 	//Update PWM
 	int multiplier = 50;
-	if (traveled <= rads/2) {
+	if (abs(phi-startPhi) <= rads/2) {
 		pwm = min( multiplier * abs(phi-startPhi) + MINPWM, MAXPWM );
 		}
-	else if (traveled > rads/2 && traveled < rads) {
+	else if (abs(phi-startPhi)  > rads/2 && abs(phi-startPhi) < rads) {
 		pwm = min( multiplier * (rads - abs(phi-startPhi)) + MINPWM, MAXPWM );
 		}
 	else{
@@ -287,11 +308,11 @@ void rotatebot(float degrees) {
     analogWrite(MOTORPWM[1], 0);
 }
 
-void circlebot(float radius) {
+void circlebot(float radius, float degrees) {
     if(radius == 0) {
         circleCommand = false;
         rotateCommand = true;
-        arg = 360;
+        arg = degrees;
     }
     //find maximum pwms for each wheel based on radius
     float leftRadius = radius*0.3048 - ROBOT_WIDTH*5;
@@ -309,7 +330,7 @@ void circlebot(float radius) {
     analogWrite(MOTORPWM[0], abs(leftpwm));
     analogWrite(MOTORPWM[1], abs(rightpwm));
 
-    while(abs(phi-startPhi) < 2*PI) {
+    while(abs(phi-startPhi) < degrees*PI/180) {
         serialEvent();
         if (!circleCommand) break;
         if(phi-startPhi < (2*PI)/24) {

@@ -57,19 +57,19 @@ class Robot:
 
     def update_xy(self):
         self.delta_y_error = self.y - self.distance * math.sin(self.heading)
-        self.x = self.distance * math.cos((90 - self.heading) * 180/math.pi)
-        self.y = self.distance * math.sin((90 - self.heading) * 180/math.pi)
+        self.x = self.x + self.distance * math.sin((90 - self.heading) * 180/math.pi)
+        self.y = self.y + self.distance * math.cos((90 - self.heading) * 180/math.pi)
 
         self.x_error = self.x_destination - self.x
-        if self.x_error > 2:
-            self.x_error = 2
+        # if self.x_error > 2:
+        #     self.x_error = 2
 
         self.y_error = self.y_destination - self.y
 
 def main():
     distance = ctrl.Antecedent(np.arange(0, 3.2, 0.08), 'distance')  # meters
     angle = ctrl.Antecedent(np.arange(0, 181, 1), 'angle')  # meters
-    x_error = ctrl.Antecedent(np.arange(-2, 2.1, 0.1), 'x_error')  # meters
+    x_error = ctrl.Antecedent(np.arange(-4, 4.1, 0.1), 'x_error')  # meters
     delta_y_error = ctrl.Antecedent(np.arange(-2, 2.08, 0.08), "delta_y_error")  # meters
 
     speed = ctrl.Consequent(np.arange(0, 401, 1), 'speed')  # motor input
@@ -86,9 +86,9 @@ def main():
     angle['mid_right'] = skfuzzy.trimf(angle.universe, [90, 135, 180])
     angle['right'] = skfuzzy.trimf(angle.universe, [135, 180, 180])
 
-    x_error['negative'] = skfuzzy.trimf(x_error.universe, [-2, -2, 0])
-    x_error['zero'] = skfuzzy.trimf(x_error.universe, [-0.5, 0, 0.5])
-    x_error['positive'] = skfuzzy.trapmf(x_error.universe, [0, 2, 2, 2])
+    x_error['negative'] = skfuzzy.trimf(x_error.universe, [-4, 0, 0])
+    x_error['zero'] = skfuzzy.trimf(x_error.universe, [-1, 0, 1])
+    x_error['positive'] = skfuzzy.trapmf(x_error.universe, [1, 4, 4, 4])
 
     delta_y_error['negative'] = skfuzzy.trimf(delta_y_error.universe, [-2, -2, 0])
     delta_y_error['zero'] = skfuzzy.trimf(delta_y_error.universe, [-0.5, 0, 0.5])
@@ -131,11 +131,11 @@ def main():
     speed_sim = ctrl.ControlSystemSimulation(speed_control)
 
     # Object locations at
-    rectangle1 = Rectangle(1, 2, 1, 2)
+    rectangle1 = Rectangle(6, 7, 6, 7)
     objects = [rectangle1]
 
     # Creates robot start location and destination locations
-    robot = Robot(0.5, 0.5, 5, 5)
+    robot = Robot(6, 0, 6, 10)
 
     # Calculate the min distance to one of the 4 corners
     for i in range(len(objects)):
@@ -143,7 +143,9 @@ def main():
 
     min_xy_distance = INT_MAX
     index = 0
+
     for i in range(len(objects)):
+        objects[i].compute_xy_distance(robot.x, robot.y)
         temp_distance = objects[i].compute_distance()
         if temp_distance < float(min_xy_distance):
             min_xy_distance = temp_distance
@@ -180,6 +182,7 @@ def main():
         np.append(y, robot.y)
 
         for i in range(len(objects)):
+            objects[i].compute_xy_distance(robot.x, robot.y)
             temp_distance = objects[i].compute_distance()
             if temp_distance < float(min_xy_distance):
                 min_xy_distance = temp_distance
@@ -196,6 +199,10 @@ def main():
         # speed_sim.input['angle'] = objects[index].angle
         print("x:" + str(robot.x))
         print("y:" + str(robot.y))
+        # print("Speed: ")
+        # print(speed_sim.output['speed'])
+        # print("Heading: ")
+        # print(speed_sim.output['heading'])
 
     plt.plot(x, y)
     plt.show()

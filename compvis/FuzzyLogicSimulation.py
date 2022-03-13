@@ -1,4 +1,5 @@
 import math
+import random
 from _testcapi import INT_MAX
 
 import skfuzzy
@@ -6,11 +7,9 @@ import numpy as np
 from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
-
-
 class Rectangle:
-    """ A class of Python object that describes the properties of a rectangle"""
 
+    """ A class of Python object that describes the properties of a rectangle"""
     def __init__(self, x1, x2, y1, y2):
         self.angle = None
         self.y_min_distance = None
@@ -24,12 +23,16 @@ class Rectangle:
         return self.x1, self.x2, self.y1, self.y2
 
     def compute_xy_distance(self, x_loc, y_loc):
-        x1_distance = self.x1 - x_loc
-        x2_distance = self.x2 - x_loc
-        x_min_distance = min(abs(x1_distance), abs(x2_distance))
-        y1_distance = self.y1 - y_loc
-        y2_distance = self.y2 - y_loc
-        y_min_distance = min(abs(y1_distance), abs(y2_distance))
+        x_center = (self.x1 + self.x2) / 2
+        y_center = (self.y1 + self.y2) / 2
+        x_min_distance = abs(x_center - x_loc)
+        y_min_distance = abs(y_center - y_loc)
+        # x1_distance = self.x1 - x_loc
+        # x2_distance = self.x2 - x_loc
+        # x_min_distance = min(abs(x1_distance), abs(x2_distance))
+        # y1_distance = self.y1 - y_loc
+        # y2_distance = self.y2 - y_loc
+        # y_min_distance = min(abs(y1_distance), abs(y2_distance))
         self.x_min_distance = x_min_distance
         self.y_min_distance = y_min_distance
 
@@ -59,7 +62,6 @@ class Robot:
         return self.heading
 
     def calculate_distance_moved(self, speed):
-        # TODO round to interval
         self.distance = speed / 10000
 
     def update_xy(self):
@@ -140,14 +142,21 @@ def main():
     speed_sim = ctrl.ControlSystemSimulation(speed_control)
 
     # Object locations at
-    rectangle1 = Rectangle(6.15, 6.45, 6, 6.3)
-    rectangle2 = Rectangle(6, 6.3, 3, 3.3)
-    # rectangle3 = Rectangle(6.45, 6.65, 8, 8.3)
+    objects = []
+    for i in range(10):
+        rand1 = random.randint(5, 8)
+        rand2 = random.randint(0, 10)
+        objects.append(Rectangle(rand1, rand1 + .03, rand2, rand2 + .3))
+    # rectangle1 = Rectangle(6, 6.05, 3, 3.3)
+    # rectangle2 = Rectangle(6.45, 6.50, 7, 7.3)
+    # rectangle2 = Rectangle(6.15, 6.20, 6, 6.3)
+    # rectangle3 = Rectangle(6.45, 6.50, 7, 7.3)
+    #
     # objects = [rectangle1, rectangle2, rectangle3]
-    objects = [rectangle1, rectangle2]
+    # objects = [rectangle1, rectangle2]
 
     # Creates robot start location and destination locations
-    robot = Robot(6, 0, 6.5, 11)
+    robot = Robot(6, 0, 6.5, 15)
 
     # Calculate the min distance to one of the 4 corners
     min_xy_distance = INT_MAX
@@ -205,8 +214,8 @@ def main():
         objects[index].compute_angle(robot.get_heading())
 
     fig, ax = plt.subplots()
-    plt.xlim([5, 8])
-    plt.ylim([0, 14])
+    plt.xlim([4, 9])
+    plt.ylim([0, 17])
     ax.plot(x_path, y_path)
 
     loc_list = []

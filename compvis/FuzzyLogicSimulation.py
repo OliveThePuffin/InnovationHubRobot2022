@@ -7,6 +7,7 @@ from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
 
+
 class Rectangle:
     """ A class of Python object that describes the properties of a rectangle"""
 
@@ -18,6 +19,9 @@ class Rectangle:
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
+
+    def get_obj_loc(self):
+        return self.x1, self.x2, self.y1, self.y2
 
     def compute_xy_distance(self, x_loc, y_loc):
         x1_distance = self.x1 - x_loc
@@ -32,8 +36,8 @@ class Rectangle:
     def compute_distance(self):
         return math.sqrt(math.pow(self.x_min_distance, 2) + math.pow(self.y_min_distance, 2))
 
-    def compute_angle(self):
-        self.angle = 90 + math.atan(self.x_min_distance / self.y_min_distance) * 180/math.pi
+    def compute_angle(self, robot_heading):
+        self.angle = (90 + math.atan(self.x_min_distance / self.y_min_distance) * 180/math.pi) + (robot_heading - 90)
 
 
 class Robot:
@@ -51,16 +55,19 @@ class Robot:
     def update_heading(self, heading):
         self.heading = heading
 
+    def get_heading(self):
+        return self.heading
+
     def calculate_distance_moved(self, speed):
         # TODO round to interval
-        self.distance = speed / 300
+        self.distance = speed / 10000
 
     def update_xy(self):
-        self.delta_y_error = self.y - self.distance * math.sin(self.heading)
-        self.x = self.x + self.distance * math.sin((90 - self.heading) * 180/math.pi)
-        self.y = self.y + self.distance * math.cos((90 - self.heading) * 180/math.pi)
+        self.delta_y_error = -self.distance * math.cos((self.heading - 90) * math.pi/180)
+        self.x = self.x + self.distance * math.sin((self.heading - 90) * math.pi/180)
+        self.y = self.y + self.distance * math.cos((self.heading - 90) * math.pi/180)
 
-        self.x_error = self.x_destination - self.x
+        self.x_error = self.x - self.x_destination
         # if self.x_error > 2:
         #     self.x_error = 2
 
@@ -86,9 +93,9 @@ def main():
     angle['mid_right'] = skfuzzy.trimf(angle.universe, [90, 135, 180])
     angle['right'] = skfuzzy.trimf(angle.universe, [135, 180, 180])
 
-    x_error['negative'] = skfuzzy.trimf(x_error.universe, [-4, 0, 0])
+    x_error['negative'] = skfuzzy.trimf(x_error.universe, [-4, -2, 0])
     x_error['zero'] = skfuzzy.trimf(x_error.universe, [-1, 0, 1])
-    x_error['positive'] = skfuzzy.trapmf(x_error.universe, [1, 4, 4, 4])
+    x_error['positive'] = skfuzzy.trimf(x_error.universe, [0, 2, 4])
 
     delta_y_error['negative'] = skfuzzy.trimf(delta_y_error.universe, [-2, -2, 0])
     delta_y_error['zero'] = skfuzzy.trimf(delta_y_error.universe, [-0.5, 0, 0.5])
@@ -108,6 +115,8 @@ def main():
 
     # speed.view()
     # heading.view()
+    # x_error.view()
+    # plt.show()
 
     # RULES
     rule1 = ctrl.Rule(distance['high'] | (angle['right'] | angle['left']), speed['high'])
@@ -131,16 +140,16 @@ def main():
     speed_sim = ctrl.ControlSystemSimulation(speed_control)
 
     # Object locations at
-    rectangle1 = Rectangle(6, 7, 6, 7)
-    objects = [rectangle1]
+    rectangle1 = Rectangle(6.15, 6.45, 6, 6.3)
+    rectangle2 = Rectangle(6, 6.3, 3, 3.3)
+    # rectangle3 = Rectangle(6.45, 6.65, 8, 8.3)
+    # objects = [rectangle1, rectangle2, rectangle3]
+    objects = [rectangle1, rectangle2]
 
     # Creates robot start location and destination locations
-    robot = Robot(6, 0, 6, 10)
+    robot = Robot(6, 0, 6.5, 11)
 
     # Calculate the min distance to one of the 4 corners
-    for i in range(len(objects)):
-        objects[i].compute_xy_distance(robot.x, robot.y)
-
     min_xy_distance = INT_MAX
     index = 0
 
@@ -154,15 +163,15 @@ def main():
     if min_xy_distance > 3:
         min_xy_distance = 3
 
-    objects[index].compute_angle()
+    objects[index].compute_angle(robot.get_heading())
+    x_path = []
+    y_path = []
 
-    x = np.array([])
-    y = np.array([])
+    x_path.append(robot.x)
+    y_path.append(robot.y)
+    robot.update_xy()
 
-    np.append(x, robot.x)
-    np.append(y, robot.y)
-
-    while (x_error and robot.y_error) >= .1:
+    while abs(robot.x_error) > .2 or abs(robot.y_error) > .2:
         speed_sim.input['x_error'] = robot.x_error
         speed_sim.input['distance'] = min_xy_distance
         speed_sim.input['delta_y_error'] = robot.delta_y_error
@@ -178,9 +187,11 @@ def main():
         robot.calculate_distance_moved(new_speed)
         robot.update_xy()
 
-        np.append(x, robot.x)
-        np.append(y, robot.y)
+        x_path.append(robot.x)
+        y_path.append(robot.y)
 
+        min_xy_distance = INT_MAX
+        index = 0
         for i in range(len(objects)):
             objects[i].compute_xy_distance(robot.x, robot.y)
             temp_distance = objects[i].compute_distance()
@@ -191,39 +202,37 @@ def main():
         if min_xy_distance > 3:
             min_xy_distance = 3
 
-        objects[index].compute_angle()
+        objects[index].compute_angle(robot.get_heading())
 
-        # speed_sim.input['x_error'] = robot.x_error
-        # speed_sim.input['distance'] = min_xy_distance
-        # speed_sim.input['delta_y_error'] = robot.delta_y_error
-        # speed_sim.input['angle'] = objects[index].angle
-        print("x:" + str(robot.x))
-        print("y:" + str(robot.y))
-        # print("Speed: ")
-        # print(speed_sim.output['speed'])
-        # print("Heading: ")
-        # print(speed_sim.output['heading'])
+    fig, ax = plt.subplots()
+    plt.xlim([5, 8])
+    plt.ylim([0, 14])
+    ax.plot(x_path, y_path)
 
-    plt.plot(x, y)
+    loc_list = []
+    for i in range(len(objects)):
+        loc_list.append(objects[i].get_obj_loc())
+        width = loc_list[i][1] - loc_list[i][0]
+        height = loc_list[i][3] - loc_list[i][2]
+
+        ax.add_patch(plt.Rectangle((loc_list[i][0], loc_list[i][2]), width, height, fc='r'))
+
+    ax.add_patch(plt.Circle((robot.x_destination, robot.y_destination), .2, fc='g'))
     plt.show()
 
-
-    # CONSEQUENTS:
-    speed.view(sim=speed_sim)
-    heading.view(sim=speed_sim)
-    x_error.view(sim=speed_sim)
-
-    # ANTECEDENTS:
-    distance.view(sim=speed_sim)
-    angle.view(sim=speed_sim)
+    # # CONSEQUENTS:
+    # speed.view(sim=speed_sim)
+    # heading.view(sim=speed_sim)
+    # x_error.view(sim=speed_sim)
+    #
+    # # ANTECEDENTS:
+    # distance.view(sim=speed_sim)
+    # angle.view(sim=speed_sim)
 
     # print("Speed: ")
     # print(speed_sim.output['speed'])
     # print("Heading: ")
     # print(speed_sim.output['heading'])
-
-    plt.show()
-
 
 if __name__ == '__main__':
     main()

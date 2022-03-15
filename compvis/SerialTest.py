@@ -8,9 +8,9 @@ def main():
     ser = serial.Serial('/dev/ttyACM0')
 
     for i in range(100):
-        ser.write(x)
+        ser.write(f'{x}'.encode("utf-8"))
         ser.write("\n")
-        ser.write(y)
+        ser.write(f'{y}'.encode("utf-8"))
 
         x = random.randint(0, 10)
         y = random.randint(0, 10)

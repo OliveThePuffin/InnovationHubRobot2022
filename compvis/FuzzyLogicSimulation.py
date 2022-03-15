@@ -174,7 +174,7 @@ def main():
 
     # Object locations at
     objects = []
-    for i in range(100):
+    for i in range(30):
         rand1 = random.random() * 10
         # rand1 = random.random() * ((8 - 5) + 1) + 3
         rand2 = random.random() * 10
@@ -183,16 +183,9 @@ def main():
             # rand1 = random.random() * ((8 - 5) + 1) + 3
             rand2 = random.random() * 10
         objects.append(Rectangle(rand1, rand1 + .03, rand2, rand2 + .3))
-    # rectangle1 = Rectangle(5.65, 5.7, 2, 2.3)
-    # rectangle2 = Rectangle(6.45, 6.50, 7, 7.3)
-    # rectangle3 = Rectangle(6.15, 6.20, 6, 6.3)
-    # rectangle4 = Rectangle(6.45, 6.50, 7, 7.3)
-    #
-    # objects = [rectangle1]
-    # objects = [rectangle1, rectangle2]
 
     # Creates robot start location and destination locations
-    robot = Robot(0, 0, 10, 15)
+    robot = Robot(0, 0, 4, 15)
 
     # Calculate the min distance to one of the 4 corners
     min_xy_distance = INT_MAX
@@ -218,7 +211,7 @@ def main():
     speed_at_loc.append(0)
     robot.update_xy()
 
-    while abs(robot.x_error) > .5 or abs(robot.y_error) > .2:
+    while abs(robot.x_error) > .5 or abs(robot.y_error) > .1:
         speed_sim.input['x_error'] = robot.x_error
         speed_sim.input['distance'] = min_xy_distance
         speed_sim.input['delta_y_error'] = robot.delta_y_error
@@ -236,8 +229,6 @@ def main():
 
         x_path.append(robot.x)
         y_path.append(robot.y)
-        print("X: " + str(robot.x))
-        print("Y: " + str(robot.y))
         speed_at_loc.append(new_speed)
 
         min_xy_distance = INT_MAX

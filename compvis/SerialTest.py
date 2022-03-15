@@ -9,6 +9,7 @@ def main():
 
     for i in range(100):
         ser.write(x)
+        ser.write("\n")
         ser.write(y)
 
         x = random.randint(0, 10)

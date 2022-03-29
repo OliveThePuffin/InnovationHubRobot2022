@@ -10,7 +10,7 @@ def main():
     #
     # ser.close()
     ser = serial.Serial(
-        port='/dev/ttyUSB0',
+        port='/dev/ttyACM0',
         baudrate=9600,
         timeout=1,
         parity=serial.PARITY_NONE,

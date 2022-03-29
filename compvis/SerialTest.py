@@ -3,10 +3,12 @@ import time
 
 
 def main():
-    ser = serial.Serial('/dev/ttyACM0', baudrate=9600)
-    message = "Serial Test\n"
+    ser = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1)
+    ser.reset_input_buffer())
 
-    ser.write(bytes(message, 'utf-8'))
+    while True:
+        ser.write(b"serial test\n")
+        time.sleep(1)
 
 
     # ser = serial.Serial(

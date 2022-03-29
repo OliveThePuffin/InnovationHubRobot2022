@@ -3,7 +3,7 @@ import serial
 
 def main():
     ser = serial.Serial('/dev/ttyACM0', baudrate=9600)
-    message = "Serial Test"
+    message = "Serial Test\n"
     while True:
         ser.write(bytes(message, 'utf-8'))
 

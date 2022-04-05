@@ -16,16 +16,8 @@ global PERSON_IN_PATH
 
 
 def main():
-    PATH_OBSTRUCTED = False
-    PERSON_IN_PATH = True
 
     # ser = serial.Serial('/dev/ttyACM0')  # open serial port
-
-    video_feed = cv2.VideoCapture(0)
-    img_width = int(video_feed.get(3))
-    img_height = int(video_feed.get(4))
-    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
-    # videoWriter = cv2.VideoWriter("output.avi", fourcc=fourcc, fps=30.0, frameSize=(img_width, img_height))
 
     pipeline = rs.pipeline()
 
@@ -63,7 +55,6 @@ def main():
 
     # Getting the depth sensor's depth scale (see rs-align example for explanation)
     depth_sensor = profile.get_device().first_depth_sensor()
-    depth_scale = depth_sensor.get_depth_scale()
 
     # Create an align object
     # rs.align allows us to perform alignment of depth frames to others frames
@@ -95,9 +86,9 @@ def main():
             cv2.line(color_image, (425, 0), (425, 479), (0, 0, 255), 2)
 
             # get min distance on left side
-            min_left = 9000     # meters
-            min_center = 9000  # meters
-            min_right = 9000  # meters
+            min_left = SAFE_DISTANCE     # meters
+            min_center = SAFE_DISTANCE  # meters
+            min_right = SAFE_DISTANCE  # meters
 
             min_left_coord = [1000, 1000]
             min_center_coord = [1000, 1000]
@@ -111,15 +102,15 @@ def main():
                     distance_center = aligned_depth_frame.get_distance(column + 213, row)
                     distance_right = aligned_depth_frame.get_distance(column + 426, row)
 
-                    if distance_left < min_left:
+                    if min_left > distance_left > 0.1:
                         min_left = distance_left
                         min_left_coord = [column, row]
 
-                    if distance_center < min_center:
+                    if min_center > distance_center > 0.1:
                         min_center = distance_center
                         min_center_coord = [column + 213, row]
 
-                    if distance_right < min_right:
+                    if min_right > distance_right > 0.1:
                         min_right = distance_right
                         min_right_coord = [column + 426, row]
 
@@ -189,9 +180,7 @@ def main():
     finally:
         pipeline.stop()
 
-    #ser.close()
-
-    # videoWriter.release()
+    # ser.close()
 
 
 if __name__ == "__main__":

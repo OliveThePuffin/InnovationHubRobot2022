@@ -1,13 +1,39 @@
 import serial
 import time
+import ctypes
+
+def make_arduino_info(distance, orientation):
+    c_distance = ctypes.c_float(distance)
+    bytes_distance = ctypes.c_int.from_address(ctypes.addressof(c_distance)).value
+    c_orientation = ctypes.c_float(orientation)
+    bytes_orientation = ctypes.c_int.from_address(ctypes.addressof(c_distance)).value
+    
+
+
+    serial_data = [0 for i in range(8)]
+    serial_data[0] = (bytes_distance & 0x000000FF)
+    serial_data[1] = (bytes_distance & 0x0000FF00) >> 8
+    serial_data[2] = (bytes_distance & 0x00FF0000) >> 16
+    serial_data[3] = (bytes_distance & 0xFF000000) >> 24
+
+    serial_data[4] = (bytes_orientation & 0x000000FF)
+    serial_data[5] = (bytes_orientation & 0x0000FF00) >> 8
+    serial_data[6] = (bytes_orientation & 0x00FF0000) >> 16
+    serial_data[7] = (bytes_orientation & 0xFF000000) >> 24
+    
+    serial_data = bytearray(serial_data)
+
+    return(serial_data)
+
 
 
 def main():
     ser = serial.Serial('/dev/ttyACM0', baudrate=9600)
-    message = "Serial Test\n"
+    message = bytearray([97, 98, 99])
 
-    ser.write(bytes(message, 'utf-8'))
-
+    while True:
+        ser.write(make_arduino_info(30, 100))
+        time.sleep(1)
 
     # ser = serial.Serial(
     #     port='/dev/ttyACM0',
@@ -36,8 +62,6 @@ def main():
     #     ser.write(chr(0x0050) + chr(0x0000) + chr(0x000C) + chr(0x0000) + chr(0x000A) + chr(0x00FF) + chr(0x00FF))  # 12
     #     ser.write(chr(0x0050) + chr(0x0000) + chr(0x000D) + chr(0x0000) + chr(0x000A) + chr(0x00FF) + chr(0x00FF))  # 13
     #     ser.write(chr(0x0050) + chr(0x0000) + chr(0x000E) + chr(0x0000) + chr(0x000A) + chr(0x00FF) + chr(0x00FF))  # 14
-    #     ser.write(chr(0x0050) + chr(0x0000) + chr(0x000F) + chr(0x0000) + chr(0x000A) + chr(0x00FF) + chr(0x00FF))  # 15
-    #     ser.write(chr(0x0050) + chr(0x0000) + chr(0x0010) + chr(0x0000) + chr(0x000A) + chr(0x00FF) + chr(0x00FF))  # 16
 
 
 if __name__ == '__main__':

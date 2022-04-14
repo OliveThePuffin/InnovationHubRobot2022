@@ -1,3 +1,5 @@
+#!/bin/python3.9
+
 import skfuzzy
 import numpy as np
 from skfuzzy import control as ctrl

@@ -1,3 +1,5 @@
+#!/bin/python3.9
+
 # OBJECT DETECTION
 
 import cv2

@@ -5,7 +5,6 @@
 import cv2
 import numpy as np
 import pyrealsense2 as rs
-from imutils.object_detection import non_max_suppression
 
 
 def get_height_meters(y, depth, fy, cy):

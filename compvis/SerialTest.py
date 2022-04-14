@@ -28,8 +28,17 @@ def make_arduino_info(distance, orientation):
 
 
 def main():
+<<<<<<< HEAD
     ser = serial.Serial('/dev/ttyACM0', baudrate=9600)
     message = bytearray([97, 98, 99])
+=======
+    ser = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1)
+    ser.reset_input_buffer())
+
+    while True:
+        ser.write(b"serial test\n")
+        time.sleep(1)
+>>>>>>> 8ac8af525fa90262119ad571e66df712cffdae9d
 
     while True:
         ser.write(make_arduino_info(30, 100))

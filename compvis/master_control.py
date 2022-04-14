@@ -26,10 +26,7 @@ def main():
         loop_count = loop_count + 1
 
         x_error = 0
-        delta_y_error = 0
-        distance_center = 3
-        distance_left = .2
-        distance_right = 3
+        delta_y_error = -1.8
 
         # call fuzzy logic controller to get speed and heading output
         speed, heading = fuzzy_logic.calculate_output(distance_left, distance_center, distance_right,

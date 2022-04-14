@@ -13,7 +13,7 @@ def main():
     #     ' '.join([f'{b:02x}' for b in packet[4:]]),
     #     )
 
-    ser = serial.Serial('/dev/cu.usbmodem1101', baudrate=9600, timeout=1)
+    ser = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1)
     ser.reset_input_buffer()
 
     while True:

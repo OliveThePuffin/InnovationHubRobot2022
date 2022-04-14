@@ -1,6 +1,6 @@
 # Julian Reynolds
 # CSCI 507
-# Homework 4
+
 
 import math
 import numpy as np

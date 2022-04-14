@@ -1,3 +1,5 @@
+#!/bin/python3.9
+
 # MASTER CONTROLLER
 # Calls fuzzy logic and object detection programs
 

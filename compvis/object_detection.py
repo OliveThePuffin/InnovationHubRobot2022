@@ -120,6 +120,7 @@ def detect_person():
 
     person_exists = False
     SAFE_DISTANCE = 3  # meters
+    CLIPPING_DISTANCE = 3  # meters
 
     pipeline = rs.pipeline()
 
@@ -157,6 +158,10 @@ def detect_person():
 
     # Getting the depth sensor's depth scale (see rs-align example for explanation)
     depth_sensor = profile.get_device().first_depth_sensor()
+    depth_scale = depth_sensor.get_depth_scale()
+
+    # We will be removing the background of objects more than clipping_distance_in_meters meters away
+    clipping_distance = CLIPPING_DISTANCE / depth_scale
 
     # Create an align object
     # rs.align allows us to perform alignment of depth frames to others frames
@@ -178,23 +183,21 @@ def detect_person():
 
         depth_image = np.asanyarray(aligned_depth_frame.get_data())
         color_image = np.asanyarray(color_frame.get_data())
-
-        cv2.line(color_image, (212, 0), (212, 479), (0, 0, 255), 2)
-        cv2.line(color_image, (425, 0), (425, 479), (0, 0, 255), 2)
+        
+        # remove background
+        grey_color = 0
+        depth_image_3d = np.dstack((depth_image, depth_image, depth_image))  # depth image is 1 channel, color is 3 channels
+        bg_removed = np.where((depth_image_3d > clipping_distance) | (depth_image_3d <= 0), grey_color, color_image)
 
         # PEDESTRIAN TRACKING WITH HOG FILTER
         # ======================================================================================================
         hog = cv2.HOGDescriptor()
         hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-        boxes, weights = hog.detectMultiScale(color_image, winStride=(8, 8), padding=(8, 8), scale=1.05)
+        boxes, weights = hog.detectMultiScale(bg_removed, winStride=(8, 8), padding=(8, 8), scale=1.05)
         npboxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
-        pick = non_max_suppression(npboxes, probs=None, overlapThresh=0.65)
-        for (xA, yA, xB, yB) in pick:
-            person_center = np.array([[((xA + xB) / 2)], [((yA + yB) / 2)]])
-            depth_center = aligned_depth_frame.get_distance(person_center[0], person_center[1])
-            if depth_center < SAFE_DISTANCE:
-                person_exists = True
+        if np.size(npboxes) != 0:
+            person_exists = True
         # ======================================================================================================
 
     finally:

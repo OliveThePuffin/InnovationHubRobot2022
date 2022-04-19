@@ -3,7 +3,6 @@
 import skfuzzy
 import numpy as np
 from skfuzzy import control as ctrl
-import matplotlib.pyplot as plt
 
 
 def initialize_controller():

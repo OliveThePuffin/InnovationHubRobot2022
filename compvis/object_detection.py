@@ -5,15 +5,21 @@
 import cv2
 import numpy as np
 import pyrealsense2 as rs
+import time
 
 
 def get_height_meters(y, depth, fy, cy):
     y_w = -((y - cy) * depth) / fy
     return y_w
 
+def reset_camera():
+    ctx = rs.context()
+    devices = ctx.query_devices()
+    for dev in devices:
+        dev.hardware_reset()
 
 def get_depths():
-
+    
     ROBOT_HEIGHT = 2  # meters
     SAFE_DISTANCE = 3  # meters
 
@@ -57,13 +63,14 @@ def get_depths():
 
     # Getting the depth sensor's depth scale (see rs-align example for explanation)
     depth_sensor = profile.get_device().first_depth_sensor()
+    depth_scale = depth_sensor.get_depth_scale()
 
     # Create an align object
     # rs.align allows us to perform alignment of depth frames to others frames
     # The "align_to" is the stream type to which we plan to align depth frames.
     align_to = rs.stream.color
     align = rs.align(align_to)
-
+    
     # get camera image
     try:
         # Get frameset of color and depth
@@ -77,10 +84,11 @@ def get_depths():
         color_frame = aligned_frames.get_color_frame()
 
         depth_image = np.asanyarray(aligned_depth_frame.get_data())
+        depth_image = depth_scale * depth_image
+        np.delete(depth_image, 639, 1)
         color_image = np.asanyarray(color_frame.get_data())
-
-        cv2.line(color_image, (212, 0), (212, 479), (0, 0, 255), 2)
-        cv2.line(color_image, (425, 0), (425, 479), (0, 0, 255), 2)
+        
+        left_segment, center_segment, right_segment = np.split(depth_image, 3, 0)
 
         # get min distance on left side
         min_left = SAFE_DISTANCE     # meters
@@ -90,7 +98,11 @@ def get_depths():
         distance_left = SAFE_DISTANCE
         distance_center = SAFE_DISTANCE
         distance_right = SAFE_DISTANCE
-        for row in range(479):
+        start = time.time()
+        distance_left = np.amin(left_segment)
+        distance_center = np.amin(center_segment)
+        distance_right = np.amin(right_segment)
+        """for row in range(479):
             for column in range(212):
                 distance_left = aligned_depth_frame.get_distance(column, row)
                 distance_center = aligned_depth_frame.get_distance(column + 213, row)
@@ -108,10 +120,14 @@ def get_depths():
 
                 if min_right > distance_right > 0.1 and height_right < ROBOT_HEIGHT:
                     min_right = distance_right
+        """
+        end = time.time()
+        print(end - start)
+    except Exception as e:
+        print(e)
 
     finally:
         pipeline.stop()
-
     return distance_left, distance_center, distance_right
 
 

@@ -179,6 +179,10 @@ class MarvelmindHedge (Thread):
         else:
             print ("Hedge {:d}: X: {:.3f}, Y: {:.3f}, Z: {:.3f}, Angle: {:d} at time T: {:.3f}".format(self.position()[0], self.position()[1], self.position()[2], self.position()[3], self.position()[4], self.position()[5]/1000.0))
 
+    def get_position(self):
+        if (isinstance(self.position()[1], int)):
+            return (self.position()[0], self.position()[1])
+
     def position(self):
         self.positionUpdated= False
         return list(self.valuesUltrasoundPosition)[-1];

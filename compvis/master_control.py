@@ -4,22 +4,25 @@
 # Calls fuzzy logic and object detection programs
 
 import fuzzy_logic
-import object_detection as od
+import object_detection_fast as od
 import serial
 import struct
 
-def main():
 
+def main():
     loop_count = 0
     num_loops = 100000
     can_alert_person = True
     person_exists = False
 
-    #  od.reset_camera
-    
+    od.reset_camera()
+
+    pipeline, config = od.initialize_pipeline()
+
     while True:
+
         # get three distances to objects from camera
-        distance_left, distance_center, distance_right = od.get_depths()
+        distance_left, distance_center, distance_right = od.get_depths(pipeline, config)
 
         # prevents robot from spamming "excuse me" voice line every time it detects a person
         if can_alert_person >= num_loops:

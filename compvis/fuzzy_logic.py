@@ -1,8 +1,7 @@
-#!/bin/python3.9
-
 import skfuzzy
 import numpy as np
 from skfuzzy import control as ctrl
+import matplotlib.pyplot as plt
 
 
 def initialize_controller():
@@ -11,7 +10,7 @@ def initialize_controller():
     distance_right = ctrl.Antecedent(np.arange(0, 3.1, 0.1), 'distance_right')  # meters
 
     x_error = ctrl.Antecedent(np.arange(-2, 2.1, 0.1), 'x_error')  # meters
-    delta_y_error = ctrl.Antecedent(np.arange(-2, 2.08, 0.08), "delta_y_error")  # meters
+    delta_y_error = ctrl.Antecedent(np.arange(-0.5, 0.6, 0.1), "delta_y_error")  # meters
 
     speed = ctrl.Consequent(np.arange(0, 401, 1), 'speed')  # motor input
     heading = ctrl.Consequent(np.arange(0, 181, 1), 'heading')  # degrees
@@ -33,8 +32,8 @@ def initialize_controller():
     x_error['zero'] = skfuzzy.trimf(x_error.universe, [-0.5, 0, 0.5])
     x_error['positive'] = skfuzzy.trapmf(x_error.universe, [0, 2, 2, 2])
 
-    delta_y_error['negative'] = skfuzzy.trimf(delta_y_error.universe, [-2, -2, 0.5])
-    delta_y_error['positive'] = skfuzzy.trimf(delta_y_error.universe, [-0.5, 2, 2])
+    delta_y_error['negative'] = skfuzzy.trimf(delta_y_error.universe, [-0.5, -0.5, 0.05])
+    delta_y_error['positive'] = skfuzzy.trimf(delta_y_error.universe, [-0.05, 0.5, 0.5])
 
     # CONSEQUENTS
     speed['zero'] = skfuzzy.trimf(speed.universe, [0, 0, 50])

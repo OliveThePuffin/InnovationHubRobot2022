@@ -65,16 +65,23 @@ class TourGuideUI : public Gtk::Window
 		Gtk::Grid	options_grid;
 		Gtk::Button	options_back_button;
 
-		//Media files
+		//Other programs
 		std::string video_player = "mpv --fs ";
+		std::string python_interpreter = "python3 ";
+
+		//Media files
 		std::string ready_file = "media/ready.gif";
 		std::string floor1_layout = "media/floor1.png";
 		std::string intro_file = "media/intro.mkv";
+
+		//Python Files
+		std::string master_control_py = "../compvis/master_control.py";
 
 		//Signal Handlers:
 		void goto_menu(bool intro);
 		void goto_rooms();
 		void goto_options();
+		void start_master_control();
 };
 
 #endif

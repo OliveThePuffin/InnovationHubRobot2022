@@ -1,2 +1,3 @@
 GUI/build/
 .ccls-cache/
+compvis/__pycache__/

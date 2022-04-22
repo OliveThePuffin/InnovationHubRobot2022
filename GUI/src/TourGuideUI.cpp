@@ -1,3 +1,4 @@
+//#include <python3.10/Python.h>
 #include "TourGuideUI.h"
 
 TourGuideUI::TourGuideUI() //: m_button("Hello World")
@@ -47,6 +48,8 @@ void TourGuideUI::setup_main_menu()
 
 	main_tour.set_label("Full Tour");
 	main_tour.set_border_width(MENU_BORDER_WIDTH);
+	main_tour.signal_clicked().connect(sigc::mem_fun(*this,
+				&TourGuideUI::start_master_control));
 
 	main_select.set_label("Room Select");
 	main_select.set_border_width(MENU_BORDER_WIDTH);
@@ -124,10 +127,15 @@ void TourGuideUI::goto_menu(bool play_intro)
 
 void TourGuideUI::goto_rooms()
 {
-		m_stack.set_visible_child("Room Select");
+	m_stack.set_visible_child("Room Select");
 }
 
 void TourGuideUI::goto_options()
 {
-		m_stack.set_visible_child("Options");
+	m_stack.set_visible_child("Options");
+}
+
+void TourGuideUI::start_master_control()
+{
+	system(python_interpreter.append(master_control_py).c_str());
 }

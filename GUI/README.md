@@ -9,16 +9,6 @@ https://www.gnome-look.org/p/1271140
 https://www.gnome-look.org/p/1441725
 
 
-<<<<<<< HEAD
-Currently the binary must be run in this dir as `bin/TGUI` or the media files won't load
-
-TODO:
-	Make binary runable with media files anywhere
-	fix pixel formatting on ready.gif
-	fix alignment of GUI on tablet
-
-Feedback: Make room selection layout show current location
-=======
 Currently the binary must be run the root project directory as `build/TGUI` or the media files won't load
 
 ## Next Team
@@ -36,4 +26,3 @@ In order to run the GUI on the Raspberry Pi, clone this repository and run `buil
 in this directory. Once that is done, a compiled program should be runnable by
 entering `build/TGUI` in the command line. The current Raspberry Pi takes advantage
 of its graphical environment, LXDE, in order to autorun the program on startup.
->>>>>>> c89820a2ec4d89f6f46c710b23114b3de0c7214e

@@ -34,7 +34,7 @@ def main():
 
         # get marvelmind y position at beginning of loop, this will be compared to next y position
         # to find delta_y_error
-        _, previous_y = marvelmind.get_position()
+        _, previous_y = hedge.get_position()
 
         # get three distances to objects from camera
         distance_left, distance_center, distance_right = od.get_depths(pipeline, config)

@@ -5,7 +5,7 @@
 
 import fuzzy_logic
 import object_detection_fast as od
-import marvelmind
+from marvelmind import MarvelmindHedge
 import serial
 import struct
 import time
@@ -27,6 +27,10 @@ def main():
     od.reset_camera()
 
     pipeline, config = od.initialize_pipeline()
+    
+    hedge = MarvelmindHedge(tty = "/dev/ttyACM0", adr=None, debug=False) # create MarvelmindHedge thread
+    
+    hedge.start() # start thread
 
     while True:
 
@@ -46,7 +50,7 @@ def main():
             person_exists = od.detect_person()
             alert_people_start = time.time()
 
-        current_x, current_y = marvelmind.get_position()
+        current_x, current_y = hedge.get_position()
         x_error = current_x - x_destination
         delta_y_error = current_y - previous_y
 

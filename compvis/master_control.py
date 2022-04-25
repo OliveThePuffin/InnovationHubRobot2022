@@ -5,7 +5,7 @@
 
 import fuzzy_logic
 import object_detection_fast as od
-import marvelmind
+from marvelmind import MarvelmindHedge
 import serial
 import struct
 import time

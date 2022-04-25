@@ -64,13 +64,13 @@ void motorOutputs(int currSpeed, int currHeading){
   if (currHeading > MEDIAN_HEADING){
     ratio = RATIO_MULTIPLIER*(currHeading / MEDIAN_HEADING);
     // Set right motor speed lower
-    speedRightMotor = currSpeed / ratio;
+    speedLeftMotor = currSpeed / ratio;
   }
   // Robot is trying to turn left
   else{
     ratio = RATIO_MULTIPLIER*(MEDIAN_HEADING / currHeading);
     // Set right motor speed lower
-    speedLeftMotor = currSpeed / ratio;
+    speedRightMotor = currSpeed / ratio;
   }
 
   md.setSpeeds(speedLeftMotor, speedRightMotor);

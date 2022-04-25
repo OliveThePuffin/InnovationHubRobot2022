@@ -43,8 +43,15 @@ def initialize_pipeline():
 
     config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 
+    return pipeline, config
+
+
+def get_depths(pipeline, config):
+    ROBOT_HEIGHT = 2  # meters
+    SAFE_DISTANCE = 3  # meters
+
     # Start streaming
-    pipeline.start(config)
+    profile = pipeline.start(config)
 
     # camera properties:
     profile = pipeline.get_active_profile()
@@ -52,13 +59,6 @@ def initialize_pipeline():
     intrinsics = depth_profile.get_intrinsics()
     cy = intrinsics.ppy
     fy = intrinsics.fy
-
-    return pipeline, config, profile
-
-
-def get_depths(pipeline, config, profile):
-    ROBOT_HEIGHT = 2  # meters
-    SAFE_DISTANCE = 3  # meters
 
     # Getting the depth sensor's depth scale (see rs-align example for explanation)
     depth_sensor = profile.get_device().first_depth_sensor()

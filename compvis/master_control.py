@@ -26,7 +26,7 @@ def main():
 
     od.reset_camera()
 
-    pipeline, config, profile = od.initialize_pipeline()
+    pipeline, config = od.initialize_pipeline()
 
     while True:
 
@@ -37,7 +37,7 @@ def main():
         _, previous_y = marvelmind.get_position()
 
         # get three distances to objects from camera
-        distance_left, distance_center, distance_right = od.get_depths(pipeline, config, profile)
+        distance_left, distance_center, distance_right = od.get_depths(pipeline, config)
 
         # prevents robot from spamming "excuse me" voice line every time it detects a person
         # if the current time at this loop iteration minus the start time (last time voice line was used)

@@ -130,9 +130,9 @@ void loop() {
 }
 
 void WriteRightMotorDriver(float V, float Vmax) {
-  int PWMval = int(255 * abs(V) / Vmax);
-  if (PWMval > 255) {
-    PWMval = 255;
+  int PWMval = int(100 * abs(V) / Vmax);
+  if (PWMval > 100) {
+    PWMval = 100;
   }
   if ( V < 0) {
     digitalWrite(DIR1, HIGH);
@@ -147,9 +147,9 @@ void WriteRightMotorDriver(float V, float Vmax) {
 }
 
 void WriteLeftMotorDriver(float V, float Vmax) {
-  int PWMval = int(255 * abs(V) / Vmax);
-  if (PWMval > 255) {
-    PWMval = 255;
+  int PWMval = int(100 * abs(V) / Vmax);
+  if (PWMval > 100) {
+    PWMval = 100;
   }
   if ( V < 0) {
     digitalWrite(DIR2, LOW);

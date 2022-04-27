@@ -9,6 +9,25 @@ from marvelmind import MarvelmindHedge
 import serial
 import struct
 import time
+import multiprocessing as mp
+
+
+def marvelminds(robot_position):
+    hedge = MarvelmindHedge(tty="/dev/ttyACM1", adr=None, debug=False)  # create MarvelmindHedge thread
+    hedge.start()
+    robot_position = np.array([hedge.get_position()])
+    while True:
+        time.sleep(.1)
+        previous_position = robot_position
+        previous_y = previous_position[1]
+        robot_position = np.array([hedge.get_position(), previous_y])
+
+
+def camera_data(object_distances):
+    od.reset_camera()
+    pipeline, config = od.initialize_pipeline()
+    while True:
+        object_distances = np.array([od.get_depths(pipeline, config)])
 
 
 def main():
@@ -24,33 +43,28 @@ def main():
     x_destination = 2
     y_destination = 10
 
-    od.reset_camera()
+    position_data = mp.Array('f', [0, 0, 0])
+    object_distances = mp.Array('f', [0, 0, 0])
 
-    pipeline, config = od.initialize_pipeline()
-    
-    hedge = MarvelmindHedge(tty = "/dev/ttyACM0", adr=None, debug=False) # create MarvelmindHedge thread
-    
-    hedge.start()
+    proc1 = mp.Process(target=marvelminds, args=position_data)
+    proc2 = mp.Process(target=camera_data, args=object_distances)
+    proc1.start()
+    proc2.start()
     
     while True:
-
         current_time = time.time()
-
-        # get marvelmind y position at beginning of loop, this will be compared to next y position
-        # to find delta_y_error
-        _, previous_y = hedge.get_position()
-
-        # get three distances to objects from camera
-        distance_left, distance_center, distance_right = od.get_depths(pipeline, config)
 
         # prevents robot from spamming "excuse me" voice line every time it detects a person
         # if the current time at this loop iteration minus the start time (last time voice line was used)
         # we can alert people
         if current_time - alert_people_start >= alert_people_interval:
-            person_exists = od.detect_person()
+            # person_exists = od.detect_person()
             alert_people_start = time.time()
 
-        current_x, current_y = hedge.get_position()
+        current_x = position_data[0]
+        current_y = position_data[1]
+        previous_y = position_data[2]
+
         x_error = current_x - x_destination
         delta_y_error = current_y - previous_y
 
@@ -68,6 +82,10 @@ def main():
             # write packet to serial
             ser.write(packet)
             break
+
+        object_distances[0] = distance_left
+        object_distances[1] = distance_center
+        object_distances[2] = distance_right
 
         # call fuzzy logic controller to get speed and heading output
         speed, heading = fuzzy_logic.calculate_output(distance_left, distance_center, distance_right,

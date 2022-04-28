@@ -64,6 +64,7 @@ class TourGuideUI : public Gtk::Window
 		//Options
 		Gtk::Grid	options_grid;
 		Gtk::Button	options_back_button;
+		Gtk::Button	options_test_button;
 
 		//Other programs
 		std::string video_player = "mpv --fs ";
@@ -76,12 +77,14 @@ class TourGuideUI : public Gtk::Window
 
 		//Python Files
 		std::string master_control_py = "../compvis/master_control.py";
+		std::string camera_feed_py = "../compvis/camera_feed.py";
 
 		//Signal Handlers:
 		void goto_menu(bool intro);
 		void goto_rooms();
 		void goto_options();
 		void start_master_control();
+		void camera_feed();
 };
 
 #endif

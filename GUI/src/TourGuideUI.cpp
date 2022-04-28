@@ -111,9 +111,18 @@ void TourGuideUI::setup_room_select()
 
 void TourGuideUI::setup_options()
 {
-	options_back_button.set_label("Back");
+	options_grid.set_row_homogeneous(true);
+	options_grid.set_column_homogeneous(true);
 	options_grid.set_border_width(GENERAL_BORDER_WIDTH);
+
+	options_test_button.set_label("Camera Feed");
+	options_back_button.set_label("Back");
+
 	options_grid.add(options_back_button);
+	options_grid.add(options_test_button);
+
+	options_test_button.signal_clicked().connect(sigc::mem_fun(*this,
+				&TourGuideUI::camera_feed));
 	options_back_button.signal_clicked().connect(sigc::bind(sigc::mem_fun
 				(*this,	&TourGuideUI::goto_menu), false));
 }
@@ -138,4 +147,9 @@ void TourGuideUI::goto_options()
 void TourGuideUI::start_master_control()
 {
 	system(python_interpreter.append(master_control_py).c_str());
+}
+
+void TourGuideUI::camera_feed()
+{
+	system(python_interpreter.append(camera_feed_py).c_str());
 }

@@ -25,4 +25,11 @@ of the Innovation Design Hub
 In order to run the GUI on the Raspberry Pi, clone this repository and run `build.sh`
 in this directory. Once that is done, a compiled program should be runnable by
 entering `build/TGUI` in the command line. The current Raspberry Pi takes advantage
-of its graphical environment, LXDE, in order to autorun the program on startup.
+of its graphical environment, BSPWM, in order to autorun the program on startup.
+
+## About the PI
+
+Other apps could be set to startup automatically by adding a command to ~/.config/bspwm/bspwmrc
+
+the keyboard shortcuts for it can be found in ~/.config/sxhkd/sxhkdrc and can be modified to fit your needs
+though this file was uploaded to the pi quickly and contains references to some programs which are not installed

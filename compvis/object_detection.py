@@ -86,6 +86,9 @@ def get_depths():
         depth_image = np.asanyarray(aligned_depth_frame.get_data())
         depth_image = depth_scale * depth_image
         np.delete(depth_image, 639, 1)
+        np.delete(depth_image, slice(380, 479), axis=0)
+
+        depth_image = np.where(depth_image < 0.02, SAFE_DISTANCE, depth_image)
         color_image = np.asanyarray(color_frame.get_data())
         
         left_segment, center_segment, right_segment = np.split(depth_image, 3, 0)
@@ -102,6 +105,7 @@ def get_depths():
         distance_left = np.amin(left_segment)
         distance_center = np.amin(center_segment)
         distance_right = np.amin(right_segment)
+
         """for row in range(479):
             for column in range(212):
                 distance_left = aligned_depth_frame.get_distance(column, row)
@@ -122,7 +126,7 @@ def get_depths():
                     min_right = distance_right
         """
         end = time.time()
-        print(end - start)
+        # print(end - start)
     except Exception as e:
         print(e)
 

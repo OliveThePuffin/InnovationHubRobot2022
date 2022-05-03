@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+"""This is the MarvelMind code downloaded from their website. We added the function get_position(). All it is used to
+do is return the position of the robot"""
 #
 # marvelmind.py - small class for recieve and parse coordinates from Marvelmind mobile beacon by USB/serial port
 # Written by Alexander Rudykh. Support: info@marvelmind.com
@@ -179,14 +181,15 @@ class MarvelmindHedge (Thread):
         else:
             print ("Hedge {:d}: X: {:.3f}, Y: {:.3f}, Z: {:.3f}, Angle: {:d} at time T: {:.3f}".format(self.position()[0], self.position()[1], self.position()[2], self.position()[3], self.position()[4], self.position()[5]/1000.0))
 
+    # Return X and Y position of the robot
     def get_position(self):
         if (isinstance(self.position()[1], int)):
-            return (self.position()[0], self.position()[1])
+            return (self.position()[1], self.position()[2])
 
     def position(self):
         self.positionUpdated= False
         return list(self.valuesUltrasoundPosition)[-1];
-           
+
     def print_distances(self): 
         self.distancesUpdated= False
         rd= self.distances()

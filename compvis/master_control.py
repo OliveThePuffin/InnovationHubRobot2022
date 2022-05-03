@@ -11,6 +11,11 @@ import struct
 import time
 import multiprocessing as mp
 
+# This program is split into several proceses.
+# The marvelminds process is unnecessary and was only used for testing/debugging
+
+# The camera_data function should stay as a separate process because getting image data is
+# a lengthy process and it should not slow down the rest of the logic
 
 def marvelminds(robot_position):
     hedge = MarvelmindHedge(tty="/dev/ttyACM1", adr=None, debug=False)  # create MarvelmindHedge thread
@@ -50,7 +55,7 @@ def main():
     proc2 = mp.Process(target=camera_data, args=object_distances)
     proc1.start()
     proc2.start()
-    
+
     while True:
         current_time = time.time()
 
